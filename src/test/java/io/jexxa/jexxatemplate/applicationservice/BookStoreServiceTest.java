@@ -2,10 +2,10 @@ package io.jexxa.jexxatemplate.applicationservice;
 
 import io.jexxa.core.JexxaMain;
 import io.jexxa.jexxatemplate.JexxaTemplate;
-import io.jexxa.jexxatemplate.domain.businessexception.BookNotInStockException;
-import io.jexxa.jexxatemplate.domain.domainevent.BookSoldOut;
-import io.jexxa.jexxatemplate.domain.valueobject.ISBN13;
-import io.jexxa.jexxatemplate.domainservice.BookRepository;
+import io.jexxa.jexxatemplate.domain.book.BookNotInStockException;
+import io.jexxa.jexxatemplate.domain.book.BookSoldOut;
+import io.jexxa.jexxatemplate.domain.book.ISBN13;
+import io.jexxa.jexxatemplate.domain.book.BookRepository;
 import io.jexxa.jexxatemplate.domainservice.DomainEventPublisher;
 import io.jexxa.jexxatest.JexxaTest;
 import io.jexxa.jexxatest.infrastructure.drivenadapterstrategy.messaging.recording.MessageRecorder;
@@ -13,8 +13,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.jexxa.jexxatemplate.domain.domainevent.BookSoldOut.bookSoldOut;
-import static io.jexxa.jexxatemplate.domain.valueobject.ISBN13.createISBN;
+import static io.jexxa.jexxatemplate.domain.book.BookSoldOut.bookSoldOut;
+import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

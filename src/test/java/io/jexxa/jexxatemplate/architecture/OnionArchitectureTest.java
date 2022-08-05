@@ -3,13 +3,22 @@ package io.jexxa.jexxatemplate.architecture;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
+import io.jexxa.addend.applicationcore.Aggregate;
+import io.jexxa.addend.applicationcore.DomainEvent;
+import io.jexxa.addend.applicationcore.ValueObject;
 import io.jexxa.jexxatemplate.JexxaTemplate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
-import static io.jexxa.jexxatemplate.architecture.PackageName.*;
+import static io.jexxa.jexxatemplate.architecture.PackageName.APPLICATIONSERVICE;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN_PROCESS_SERVICE;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN_SERVICE;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DRIVEN_ADAPTER;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DRIVING_ADAPTER;
+import static io.jexxa.jexxatemplate.architecture.PackageName.INFRASTRUCTURE;
 
 /**
  * These tests validate the access direction af an onion architecture which is as follows:
@@ -22,7 +31,6 @@ import static io.jexxa.jexxatemplate.architecture.PackageName.*;
  *   [DomainService]
  *   [Domain]
  * }
- *
  * [ApplicationService] -down-> [DomainProcessService]
  * [ApplicationService] -down-> [DomainService]
  * [ApplicationService] -down-> [Domain]
@@ -53,10 +61,7 @@ class OnionArchitectureTest {
                         APPLICATIONSERVICE,
                         DOMAIN_PROCESS_SERVICE,
                         DOMAIN_SERVICE,
-                        AGGREGATE,
-                        BUSINESS_EXCEPTION,
-                        DOMAIN_EVENT,
-                        VALUE_OBJECT,
+                        DOMAIN,
                         INFRASTRUCTURE)
                 .orShould().haveFullyQualifiedName(JexxaTemplate.class.getName());
 
@@ -104,7 +109,7 @@ class OnionArchitectureTest {
 
         // Act
         var invalidAccess = noClasses()
-                .that().resideInAPackage(AGGREGATE)
+                .that().areAnnotatedWith(Aggregate.class)
                 .should().dependOnClassesThat()
                 .resideInAnyPackage(APPLICATIONSERVICE,
                         DOMAIN_SERVICE,
@@ -122,15 +127,12 @@ class OnionArchitectureTest {
 
         // Act
         var invalidAccess = noClasses()
-                .that().resideInAPackage(VALUE_OBJECT)
+                .that().areAnnotatedWith(ValueObject.class)
                 .should().dependOnClassesThat()
                 .resideInAnyPackage(APPLICATIONSERVICE,
                         DOMAIN_SERVICE,
                         DOMAIN_PROCESS_SERVICE,
-                        INFRASTRUCTURE,
-                        AGGREGATE,
-                        DOMAIN_EVENT,
-                        BUSINESS_EXCEPTION)
+                        INFRASTRUCTURE)
                 .because("A ValueObject must not depend on any other classes of the application except of ValueObjects");
 
 
@@ -144,12 +146,10 @@ class OnionArchitectureTest {
 
         // Act
         var invalidAccess = noClasses()
-                .that().resideInAPackage(DOMAIN_EVENT)
+                .that().areAnnotatedWith(DomainEvent.class)
                 .should().dependOnClassesThat()
                 .resideInAnyPackage(
                         APPLICATIONSERVICE,
-                        BUSINESS_EXCEPTION,
-                        AGGREGATE,
                         DOMAIN_SERVICE,
                         DOMAIN_PROCESS_SERVICE,
                         INFRASTRUCTURE);
