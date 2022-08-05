@@ -1,11 +1,11 @@
 package io.jexxa.jexxatemplate.applicationservice;
 
+import io.jexxa.addend.applicationcore.ApplicationService;
 import io.jexxa.jexxatemplate.domain.aggregate.Book;
 import io.jexxa.jexxatemplate.domain.businessexception.BookNotInStockException;
 import io.jexxa.jexxatemplate.domain.valueobject.ISBN13;
-import io.jexxa.jexxatemplate.domainservice.IBookRepository;
-import io.jexxa.jexxatemplate.domainservice.IDomainEventPublisher;
-import io.jexxa.addend.applicationcore.ApplicationService;
+import io.jexxa.jexxatemplate.domainservice.BookRepository;
+import io.jexxa.jexxatemplate.domainservice.DomainEventPublisher;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,10 +18,10 @@ import static io.jexxa.jexxatemplate.domain.valueobject.ISBN13.createISBN;
 public class BookStoreService
 {
 
-    private final IBookRepository ibookRepository;
-    private final IDomainEventPublisher domainEventPublisher;
+    private final BookRepository ibookRepository;
+    private final DomainEventPublisher domainEventPublisher;
 
-    public BookStoreService(IBookRepository ibookRepository, IDomainEventPublisher domainEventPublisher)
+    public BookStoreService(BookRepository ibookRepository, DomainEventPublisher domainEventPublisher)
     {
         this.ibookRepository = Objects.requireNonNull(ibookRepository);
         this.domainEventPublisher = Objects.requireNonNull(domainEventPublisher);

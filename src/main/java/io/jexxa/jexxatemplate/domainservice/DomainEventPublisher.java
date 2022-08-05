@@ -5,7 +5,7 @@ import io.jexxa.addend.applicationcore.InfrastructureService;
 import io.jexxa.jexxatemplate.domain.domainevent.BookSoldOut;
 
 @InfrastructureService
-public interface IDomainEventPublisher
+public interface DomainEventPublisher
 {
     void publish(BookSoldOut domainEvent);
 }

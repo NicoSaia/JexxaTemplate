@@ -13,19 +13,15 @@ import io.jexxa.addend.applicationcore.DomainWorkflow;
 import io.jexxa.addend.applicationcore.InfrastructureService;
 import io.jexxa.addend.applicationcore.Repository;
 import io.jexxa.addend.applicationcore.ValueObject;
-import io.jexxa.addend.applicationcore.ValueObjectFactory;
 import io.jexxa.jexxatemplate.JexxaTemplate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static io.jexxa.jexxatemplate.architecture.PackageName.AGGREGATE;
 import static io.jexxa.jexxatemplate.architecture.PackageName.APPLICATIONSERVICE;
-import static io.jexxa.jexxatemplate.architecture.PackageName.BUSINESS_EXCEPTION;
-import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN_EVENT;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN;
 import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN_PROCESS_SERVICE;
 import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN_SERVICE;
-import static io.jexxa.jexxatemplate.architecture.PackageName.VALUE_OBJECT;
 
 class PatternLanguageTest {
 
@@ -83,65 +79,23 @@ class PatternLanguageTest {
     }
 
     @Test
-    void testAnnotationDomainEvent() {
+    void testDomain() {
         // Arrange
 
         //Act
         var annotationRule = classes()
-                .that().resideInAnyPackage(DOMAIN_EVENT)
-                .should().beAnnotatedWith(DomainEvent.class)
-                .allowEmptyShould(true);
-
-        //Assert
-        annotationRule.check(importedClasses);
-    }
-
-    @Test
-    void testAnnotationValueObject() {
-        // Arrange
-
-        //Act
-        var annotationRule = classes()
-                .that().resideInAnyPackage(VALUE_OBJECT)
-                .should().beAnnotatedWith(ValueObject.class)
-                .orShould().beAnnotatedWith(ValueObjectFactory.class)
-                .orShould().beEnums()
-                .allowEmptyShould(true);
-
-        //Assert
-        annotationRule.check(importedClasses);
-    }
-
-    @Test
-    void testAnnotationBusinessException() {
-        // Arrange
-
-        //Act
-        var annotationRule = classes()
-                .that().resideInAnyPackage(BUSINESS_EXCEPTION)
-                .should().beAnnotatedWith(BusinessException.class)
-                .allowEmptyShould(true);
-
-        //Assert
-        annotationRule.check(importedClasses);
-    }
-
-    @Test
-    void testAnnotationAggregate() {
-        // Arrange
-
-        //Act
-        var annotationRule = classes()
-                .that().resideInAnyPackage(AGGREGATE)
-                .and().areNotAnonymousClasses()
-                .and().areNotInnerClasses()
+                .that().resideInAnyPackage(DOMAIN)
                 .should().beAnnotatedWith(Aggregate.class)
-                .orShould().beAnnotatedWith(FunctionalInterface.class)
+                .orShould().beAnnotatedWith(DomainEvent.class)
+                .orShould().beAnnotatedWith(BusinessException.class)
+                .orShould().beAnnotatedWith(ValueObject.class)
+                .orShould().beAnnotatedWith(Repository.class)
                 .allowEmptyShould(true);
 
         //Assert
         annotationRule.check(importedClasses);
     }
+
 
     @Test
     void testRepositoryMustBeInterfaces() {
@@ -177,8 +131,7 @@ class PatternLanguageTest {
 
         //Act
         var recordRule = classes()
-                .that().resideInAnyPackage(VALUE_OBJECT)
-                .and().areNotAnnotatedWith(ValueObjectFactory.class)
+                .that().areAnnotatedWith(ValueObject.class)
                 .should().beRecords()
                 .orShould().beEnums()
                 .allowEmptyShould(true);
@@ -193,7 +146,7 @@ class PatternLanguageTest {
 
         //Act
         var recordRule = classes()
-                .that().resideInAnyPackage(DOMAIN_EVENT)
+                .that().areAnnotatedWith(DomainEvent.class)
                 .should().beRecords()
                 .allowEmptyShould(true);
 
