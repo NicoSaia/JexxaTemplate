@@ -2,7 +2,6 @@ package io.jexxa.jexxatemplate.architecture;
 
 /**
  * This class defines the package names to validate the onion architecture.
- *
  * In case you use another package structure for your application, please adjust these packages accordingly.
  */
 class PackageName
@@ -14,8 +13,6 @@ class PackageName
 
     public static final String DOMAIN = "..domain..";
     public static final String BUSINESS_EXCEPTION = "..domain.businessexception";
-    public static final String DOMAIN_EVENT = "..domain.domainevent";
-    public static final String DOMAIN = "..domain..";
     public static final String VALUE_OBJECT = "..domain.valueobject";
     public static final String INFRASTRUCTURE = "..infrastructure..";
     public static final String DRIVEN_ADAPTER = "..drivenadapter..";
