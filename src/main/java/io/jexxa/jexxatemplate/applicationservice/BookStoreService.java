@@ -18,12 +18,12 @@ import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;
 public class BookStoreService
 {
 
-    private final BookRepository ibookRepository;
+    private final BookRepository bookRepository;
     private final DomainEventPublisher domainEventPublisher;
 
-    public BookStoreService(BookRepository ibookRepository, DomainEventPublisher domainEventPublisher)
+    public BookStoreService(BookRepository bookRepository, DomainEventPublisher domainEventPublisher)
     {
-        this.ibookRepository = Objects.requireNonNull(ibookRepository);
+        this.bookRepository = Objects.requireNonNull(bookRepository);
         this.domainEventPublisher = Objects.requireNonNull(domainEventPublisher);
     }
 
@@ -31,17 +31,17 @@ public class BookStoreService
     {
         var validatedISBN = createISBN(isbn13);
 
-        var result = ibookRepository.search( validatedISBN );
+        var result = bookRepository.search( validatedISBN );
         if ( result.isEmpty() )
         {
-            ibookRepository.add(newBook( validatedISBN ));
+            bookRepository.add(newBook( validatedISBN ));
         }
 
-        var book = ibookRepository.get(validatedISBN);
+        var book = bookRepository.get(validatedISBN);
 
         book.addToStock(amount);
 
-        ibookRepository.update( book );
+        bookRepository.update( book );
     }
 
 
@@ -52,7 +52,7 @@ public class BookStoreService
 
     boolean inStock(ISBN13 isbn13)
     {
-        return ibookRepository
+        return bookRepository
                 .search( isbn13 )
                 .map( Book::inStock )
                 .orElse( false );
@@ -65,7 +65,7 @@ public class BookStoreService
 
     int amountInStock(ISBN13 isbn13)
     {
-       return ibookRepository
+       return bookRepository
                 .search(isbn13)
                 .map(Book::amountInStock)
                 .orElse(0);
@@ -78,19 +78,19 @@ public class BookStoreService
 
     void sell(ISBN13 isbn13) throws BookNotInStockException
     {
-        var book = ibookRepository
+        var book = bookRepository
                 .search(isbn13)
                 .orElseThrow(BookNotInStockException::new);
 
         var lastBookSold = book.sell();
         lastBookSold.ifPresent(domainEventPublisher::publish);
 
-        ibookRepository.update(book);
+        bookRepository.update(book);
     }
 
     public List<ISBN13> getBooks()
     {
-        return ibookRepository
+        return bookRepository
                 .getAll()
                 .stream()
                 .map(Book::getISBN13)
