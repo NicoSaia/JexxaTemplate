@@ -3,13 +3,22 @@ package io.jexxa.jexxatemplate.architecture;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
+import io.jexxa.addend.applicationcore.Aggregate;
+import io.jexxa.addend.applicationcore.DomainEvent;
+import io.jexxa.addend.applicationcore.ValueObject;
 import io.jexxa.jexxatemplate.JexxaTemplate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
-import static io.jexxa.jexxatemplate.architecture.PackageName.*;
+import static io.jexxa.jexxatemplate.architecture.PackageName.APPLICATIONSERVICE;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN_PROCESS_SERVICE;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DOMAIN_SERVICE;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DRIVEN_ADAPTER;
+import static io.jexxa.jexxatemplate.architecture.PackageName.DRIVING_ADAPTER;
+import static io.jexxa.jexxatemplate.architecture.PackageName.INFRASTRUCTURE;
 
 /**
  * These tests validate the access direction af an onion architecture which is as follows:
@@ -22,7 +31,6 @@ import static io.jexxa.jexxatemplate.architecture.PackageName.*;
  *   [DomainService]
  *   [Domain]
  * }
- *
  * [ApplicationService] -down-> [DomainProcessService]
  * [ApplicationService] -down-> [DomainService]
  * [ApplicationService] -down-> [Domain]
@@ -96,18 +104,55 @@ class OnionArchitectureTest {
     }
 
     @Test
-    void testDomainDependencies() {
+    void testAggregateDependencies() {
         // Arrange -
 
         // Act
         var invalidAccess = noClasses()
-                .that().resideInAPackage(DOMAIN)
+                .that().areAnnotatedWith(Aggregate.class)
                 .should().dependOnClassesThat()
                 .resideInAnyPackage(APPLICATIONSERVICE,
                         DOMAIN_SERVICE,
                         DOMAIN_PROCESS_SERVICE,
                         INFRASTRUCTURE)
                 .because("An Aggregate must not depend on any Service or the infrastructure");
+
+        //Assert
+        invalidAccess.check(importedClasses);
+    }
+
+    @Test
+    void testValueObjectDependencies() {
+        // Arrange -
+
+        // Act
+        var invalidAccess = noClasses()
+                .that().areAnnotatedWith(ValueObject.class)
+                .should().dependOnClassesThat()
+                .resideInAnyPackage(APPLICATIONSERVICE,
+                        DOMAIN_SERVICE,
+                        DOMAIN_PROCESS_SERVICE,
+                        INFRASTRUCTURE)
+                .because("A ValueObject must not depend on any other classes of the application except of ValueObjects");
+
+
+        //Assert
+        invalidAccess.check(importedClasses);
+    }
+
+    @Test
+    void testDomainEventDependencies() {
+        // Arrange -
+
+        // Act
+        var invalidAccess = noClasses()
+                .that().areAnnotatedWith(DomainEvent.class)
+                .should().dependOnClassesThat()
+                .resideInAnyPackage(
+                        APPLICATIONSERVICE,
+                        DOMAIN_SERVICE,
+                        DOMAIN_PROCESS_SERVICE,
+                        INFRASTRUCTURE);
 
         //Assert
         invalidAccess.check(importedClasses);

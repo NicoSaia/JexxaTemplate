@@ -2,7 +2,7 @@ package io.jexxa.jexxatemplate.domainservice;
 
 import io.jexxa.addend.applicationcore.DomainService;
 import io.jexxa.jexxatemplate.domain.book.Book;
-import io.jexxa.jexxatemplate.domain.book.IBookRepository;
+import io.jexxa.jexxatemplate.domain.book.BookRepository;
 import io.jexxa.jexxatemplate.domain.book.ISBN13;
 
 import java.util.Objects;
@@ -13,9 +13,9 @@ import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;
 @DomainService
 public class ReferenceLibrary
 {
-    private final IBookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-    public ReferenceLibrary(IBookRepository bookRepository)
+    public ReferenceLibrary(BookRepository bookRepository)
     {
         this.bookRepository = Objects.requireNonNull(bookRepository);
     }

@@ -1,11 +1,11 @@
 package io.jexxa.jexxatemplate.infrastructure.drivenadapter.persistence;
 
 
-import io.jexxa.jexxatemplate.domain.book.Book;
-import io.jexxa.jexxatemplate.domain.book.ISBN13;
-import io.jexxa.jexxatemplate.domain.book.IBookRepository;
 import io.jexxa.addend.infrastructure.DrivenAdapter;
 import io.jexxa.infrastructure.drivenadapterstrategy.persistence.repository.IRepository;
+import io.jexxa.jexxatemplate.domain.book.Book;
+import io.jexxa.jexxatemplate.domain.book.ISBN13;
+import io.jexxa.jexxatemplate.domain.book.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import static io.jexxa.infrastructure.drivenadapterstrategy.persistence.reposito
 
 @SuppressWarnings("unused")
 @DrivenAdapter
-public final class BookRepositoryImpl implements IBookRepository
+public final class BookRepositoryImpl implements BookRepository
 {
     private final IRepository<Book, ISBN13> repository;
 
