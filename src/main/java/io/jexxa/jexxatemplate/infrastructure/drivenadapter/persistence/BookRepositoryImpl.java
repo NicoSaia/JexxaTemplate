@@ -15,11 +15,11 @@ import static io.jexxa.infrastructure.drivenadapterstrategy.persistence.reposito
 
 @SuppressWarnings("unused")
 @DrivenAdapter
-public final class BookRepository implements IBookRepository
+public final class BookRepositoryImpl implements IBookRepository
 {
     private final IRepository<Book, ISBN13> repository;
 
-    public BookRepository(Properties properties)
+    public BookRepositoryImpl(Properties properties)
     {
         this.repository = getRepository(Book.class, Book::getISBN13, properties);
     }
