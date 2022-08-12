@@ -17,14 +17,11 @@ import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;
 @ApplicationService
 public class BookStoreService
 {
-
     private final BookRepository bookRepository;
-    private final DomainEventPublisher domainEventPublisher;
 
-    public BookStoreService(BookRepository bookRepository, DomainEventPublisher domainEventPublisher)
+    public BookStoreService (BookRepository bookRepository)
     {
-        this.bookRepository = Objects.requireNonNull(bookRepository);
-        this.domainEventPublisher = Objects.requireNonNull(domainEventPublisher);
+        this.bookRepository = bookRepository;
     }
 
     public void addToStock(String isbn13, int amount)
@@ -82,8 +79,7 @@ public class BookStoreService
                 .search(isbn13)
                 .orElseThrow(BookNotInStockException::new);
 
-        var lastBookSold = book.sell();
-        lastBookSold.ifPresent(domainEventPublisher::publish);
+        book.sell();
 
         bookRepository.update(book);
     }

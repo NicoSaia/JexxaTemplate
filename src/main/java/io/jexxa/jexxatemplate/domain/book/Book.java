@@ -4,7 +4,8 @@ import io.jexxa.addend.applicationcore.Aggregate;
 import io.jexxa.addend.applicationcore.AggregateFactory;
 import io.jexxa.addend.applicationcore.AggregateID;
 
-import java.util.Optional;
+import static io.jexxa.jexxatemplate.domain.DomainEventPublisher.publish;
+import static io.jexxa.jexxatemplate.domain.book.BookSoldOut.bookSoldOut;
 
 @Aggregate
 public final class Book
@@ -38,7 +39,7 @@ public final class Book
         amountInStock += amount;
     }
 
-    public Optional<BookSoldOut> sell() throws BookNotInStockException
+    public void sell() throws BookNotInStockException
     {
         if ( ! inStock() )
         {
@@ -49,10 +50,8 @@ public final class Book
 
         if ( ! inStock() )
         {
-            return Optional.of(BookSoldOut.bookSoldOut(isbn13));
+            publish(bookSoldOut(isbn13));
         }
-
-        return Optional.empty();
     }
 
     @AggregateFactory(Book.class)

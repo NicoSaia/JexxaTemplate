@@ -11,7 +11,8 @@ import java.util.Objects;
 @ValueObject
 public record ISBN13(String value)
 {
-    public ISBN13 {
+    public ISBN13
+    {
         Objects.requireNonNull(value);
         validateChecksum(value);
     }
