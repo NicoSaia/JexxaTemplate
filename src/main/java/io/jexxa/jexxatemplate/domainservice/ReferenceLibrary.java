@@ -18,6 +18,7 @@ public class ReferenceLibrary
     public ReferenceLibrary(BookRepository bookRepository)
     {
         this.bookRepository = Objects.requireNonNull(bookRepository);
+        addLatestBooks();
     }
 
     public void addLatestBooks()

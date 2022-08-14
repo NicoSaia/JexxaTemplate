@@ -5,10 +5,8 @@ import io.jexxa.jexxatemplate.domain.book.Book;
 import io.jexxa.jexxatemplate.domain.book.BookNotInStockException;
 import io.jexxa.jexxatemplate.domain.book.ISBN13;
 import io.jexxa.jexxatemplate.domain.book.BookRepository;
-import io.jexxa.jexxatemplate.domainservice.DomainEventPublisher;
 
 import java.util.List;
-import java.util.Objects;
 
 import static io.jexxa.jexxatemplate.domain.book.Book.newBook;
 import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;

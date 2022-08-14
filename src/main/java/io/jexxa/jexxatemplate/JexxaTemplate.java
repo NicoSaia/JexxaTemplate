@@ -1,9 +1,9 @@
 package io.jexxa.jexxatemplate;
 
 import io.jexxa.addend.applicationcore.ApplicationService;
+import io.jexxa.addend.applicationcore.DomainService;
 import io.jexxa.core.JexxaMain;
 import io.jexxa.infrastructure.drivingadapter.rest.RESTfulRPCAdapter;
-import io.jexxa.jexxatemplate.domainservice.ReferenceLibrary;
 
 public final class JexxaTemplate
 {
@@ -12,8 +12,9 @@ public final class JexxaTemplate
         var jexxaMain = new JexxaMain(JexxaTemplate.class);
 
         jexxaMain
-                //Get the latest books when starting the application
-                .bootstrap(ReferenceLibrary.class).with(ReferenceLibrary::addLatestBooks)
+                // Bootstrap all classes annotated with @DomainService. In this application this causes to get
+                // the latest books via ReferenceLibrary and forward DomainEvents via DomainEventService
+                .bootstrapAnnotation(DomainService.class)
 
                 //bind all application services and the bounded context to driving adapters
                 .bind(RESTfulRPCAdapter.class).toAnnotation(ApplicationService.class)
@@ -27,4 +28,5 @@ public final class JexxaTemplate
     {
         //Private constructor since we only offer main
     }
+
 }

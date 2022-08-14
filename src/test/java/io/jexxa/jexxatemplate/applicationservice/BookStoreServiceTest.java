@@ -1,20 +1,20 @@
 package io.jexxa.jexxatemplate.applicationservice;
 
-import io.jexxa.core.JexxaMain;
+import io.jexxa.addend.applicationcore.DomainService;
 import io.jexxa.jexxatemplate.JexxaTemplate;
 import io.jexxa.jexxatemplate.domain.book.BookNotInStockException;
+import io.jexxa.jexxatemplate.domain.book.BookRepository;
 import io.jexxa.jexxatemplate.domain.book.BookSoldOut;
 import io.jexxa.jexxatemplate.domain.book.ISBN13;
-import io.jexxa.jexxatemplate.domain.book.BookRepository;
-import io.jexxa.jexxatemplate.domainservice.DomainEventPublisher;
+import io.jexxa.jexxatemplate.domainservice.DomainEventSender;
 import io.jexxa.jexxatest.JexxaTest;
 import io.jexxa.jexxatest.infrastructure.drivenadapterstrategy.messaging.recording.MessageRecorder;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.jexxa.jexxatemplate.domain.book.BookSoldOut.bookSoldOut;
 import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;
+import static io.jexxa.jexxatest.JexxaTest.getJexxaTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,35 +22,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class BookStoreServiceTest
 {
     private static final ISBN13 ISBN_13 = createISBN("978-3-86490-387-8" );
-    private static JexxaMain jexxaMain;
     private BookStoreService objectUnderTest;
 
     private MessageRecorder publishedDomainEvents;
     private BookRepository bookRepository;
 
 
-    @BeforeAll
-    static void initBeforeAll()
-    {
-        // We recommend instantiating JexxaMain only once for each test class.
-        // If you have larger tests this speeds up Jexxa's dependency injection
-        jexxaMain = new JexxaMain(BookStoreServiceTest.class)
-                .addDDDPackages(JexxaTemplate.class);
-    }
-
     @BeforeEach
     void initTest()
     {
         // JexxaTest is created for each test. It provides stubs for running your tests so that no
         // mock framework is required.
-        JexxaTest jexxaTest = new JexxaTest(jexxaMain);
+        JexxaTest jexxaTest = getJexxaTest(JexxaTemplate.class);
 
         // Query a message recorder for an interface which is defines in your application core.
-        publishedDomainEvents = jexxaTest.getMessageRecorder(DomainEventPublisher.class);
+        publishedDomainEvents = jexxaTest.getMessageRecorder(DomainEventSender.class);
         // Query the repository that is internally used.
         bookRepository = jexxaTest.getRepository(BookRepository.class);
         // Query the application service we want to test.
         objectUnderTest = jexxaTest.getInstanceOfPort(BookStoreService.class);
+
+        jexxaTest.getJexxaMain()
+                .bootstrapAnnotation(DomainService.class); //Publish all domain events to an external message bus
+
     }
 
     @Test

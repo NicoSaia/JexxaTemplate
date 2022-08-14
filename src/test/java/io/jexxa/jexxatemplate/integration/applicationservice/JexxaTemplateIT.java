@@ -7,12 +7,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static io.jexxa.infrastructure.drivingadapter.rest.JexxaWebProperties.JEXXA_REST_PORT;
+import static io.jexxa.jexxatest.JexxaTest.getJexxaTest;
 import static kong.unirest.ContentType.APPLICATION_JSON;
 import static kong.unirest.HeaderNames.CONTENT_TYPE;
 import static org.awaitility.Awaitility.await;
@@ -23,14 +21,12 @@ class JexxaTemplateIT
     static private String restPath;
 
     @BeforeAll
-    static void initBeforeAll() throws IOException
+    static void initBeforeAll()
     {
-        Properties applicationProperties = new Properties();
-        applicationProperties.load(JexxaTemplate.class.getResourceAsStream("/jexxa-application.properties"));
-        applicationProperties.load(new FileInputStream("./src/test/resources/jexxa-test.properties"));
+        var jexxaTest = getJexxaTest(JexxaTemplate.class);
 
         restPath = "http://localhost:" +
-                applicationProperties.getProperty(JEXXA_REST_PORT);
+                jexxaTest.getProperties().getProperty(JEXXA_REST_PORT);
 
         //Wait until application was started (using 10 seconds should be sufficient to start large applications)
         await().atMost(10, TimeUnit.SECONDS)
