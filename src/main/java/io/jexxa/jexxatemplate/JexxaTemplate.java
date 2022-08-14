@@ -13,7 +13,7 @@ public final class JexxaTemplate
 
         jexxaMain
                 // Bootstrap all classes annotated with @DomainService. In this application this causes to get
-                // the latest books via ReferenceLibrary and forward DomainEvents via DomainEventService
+                // the latest books via ReferenceLibrary and forward DomainEvents to a message bus via DomainEventService
                 .bootstrapAnnotation(DomainService.class)
 
                 //bind all application services and the bounded context to driving adapters
