@@ -43,7 +43,7 @@ class BookStoreServiceTest
         objectUnderTest = jexxaTest.getInstanceOfPort(BookStoreService.class);
 
         jexxaTest.getJexxaMain()
-                .bootstrapAnnotation(DomainService.class); //Publish all domain events to an external message bus
+                .bootstrapAnnotation(DomainService.class); //Bootstrap all services to run the application
 
     }
 
