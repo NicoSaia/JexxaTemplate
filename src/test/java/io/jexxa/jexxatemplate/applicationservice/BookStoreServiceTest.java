@@ -35,9 +35,9 @@ class BookStoreServiceTest
         // mock framework is required.
         JexxaTest jexxaTest = getJexxaTest(JexxaTemplate.class);
 
-        // Query a message recorder for an interface which is defines in your application core.
+        // Get a message recorder published DomainEvents
         publishedDomainEvents = jexxaTest.getMessageRecorder(DomainEventSender.class);
-        // Query the repository that is internally used.
+        // Get the repository to validate results in the tests .
         bookRepository = jexxaTest.getRepository(BookRepository.class);
         // Query the application service we want to test.
         objectUnderTest = jexxaTest.getInstanceOfPort(BookStoreService.class);

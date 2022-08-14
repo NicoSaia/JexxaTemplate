@@ -18,9 +18,9 @@ This template can be used to start your own Jexxa application
 *   Template for [Unit-](src/test/java/io/jexxa/jexxatemplate/applicationservice/BookStoreServiceTest.java) and [Integration tests](src/test/java/io/jexxa/jexxatemplate/integration/applicationservice/JexxaTemplateIT.java)
 
 *   Predefined architectural tests for: 
-    *   [Pattern Language](src/test/java/io/jexxa/jexxatemplate/architecture/PatternLanguageTest.java) to validate the correct annotation of your application using project [Addend](http://addend.jexxa.io/) 
-    *   [Onion Architecture](src/test/java/io/jexxa/jexxatemplate/architecture/OnionArchitectureTest.java) to validates dependencies between packages of your application
-    *   [Usage of Aggregates](src/test/java/io/jexxa/jexxatemplate/architecture/StatelessApplicationCoreTest.java) to validate that your business logic is not exposed
+    *   [Pattern Language](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validate the correct annotation of your application using project [Addend](http://addend.jexxa.io/) 
+    *   [Ports&Adapters Architecture](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validates dependencies between packages of your application
+    *   [Usage of Aggregates](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validate that your business logic is not exposed
 
 *   Predefined CI/CD scripts for GitHub including automatic dependency updates 
  

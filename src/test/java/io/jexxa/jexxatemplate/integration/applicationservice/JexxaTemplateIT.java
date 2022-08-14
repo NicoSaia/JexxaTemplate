@@ -4,7 +4,7 @@ import io.jexxa.jexxatemplate.JexxaTemplate;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -20,8 +20,8 @@ class JexxaTemplateIT
 {
     static private String restPath;
 
-    @BeforeAll
-    static void initBeforeAll()
+    @BeforeEach
+    void initBeforeEach()
     {
         var jexxaTest = getJexxaTest(JexxaTemplate.class);
 

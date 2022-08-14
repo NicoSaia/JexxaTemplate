@@ -13,6 +13,7 @@ class ArchitectureTest {
     void validatePortsAndAdapters()
     {
         portsAndAdapters(JexxaTemplate.class)
+                //Define packages that provide a dedicated driven adapter
                 .addDrivenAdapterPackage("persistence")
                 .addDrivenAdapterPackage("messaging")
                 .validate();
