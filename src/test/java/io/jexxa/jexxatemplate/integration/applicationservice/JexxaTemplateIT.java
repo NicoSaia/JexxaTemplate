@@ -25,8 +25,7 @@ class JexxaTemplateIT
     {
         var jexxaTest = getJexxaTest(JexxaTemplate.class);
 
-        restPath = "http://localhost:" +
-                jexxaTest.getProperties().getProperty(JEXXA_REST_PORT);
+        restPath = "http://localhost:" + jexxaTest.getProperties().getProperty(JEXXA_REST_PORT);
 
         //Wait until application was started (using 10 seconds should be sufficient to start large applications)
         await().atMost(10, TimeUnit.SECONDS)
