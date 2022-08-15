@@ -50,7 +50,7 @@ This template can be used to start your own Jexxa application
     java -jar "-Dio.jexxa.config.import=src/test/resources/jexxa-test.properties" target/jexxatemplate-jar-with-dependencies.jar
     ```
 
-*   See [here](https://github.com/jexxa-projects/JexxaTutorials/blob/main/BookStore/README.md#run-the-application) how to use the application from command line with `curl` (section `Execute some commands using curl)
+*   See [here](https://github.com/jexxa-projects/JexxaTutorials/blob/main/BookStore/README.md#run-the-application) how to use the application from command line with `curl` (section `Execute some commands using curl`).
 
 *   [Optional] See [here](https://github.com/jexxa-projects/JexxaTutorials/blob/main/BookStore/README-OPENAPI.md#explore-openapi) how to use the application with Swagger-UI
 
