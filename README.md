@@ -9,7 +9,7 @@ This template can be used to start your own Jexxa application
 *   Java 17+ installed
 *   IDE with maven support 
 *   [Optional] Docker or Kubernetes if you want to run your application in a container. See [here](README-CICD.md) for more information.   
-*   [Optional] A running [developer stack](deploy/developerStack.yml) providing a Postgres database, ActiveMQ broker, and Swagger-UI 
+*   [Optional] A locally running [developer stack](deploy/developerStack.yml) providing a Postgres database, ActiveMQ broker, and Swagger-UI 
 
 ## Features
 
@@ -18,9 +18,9 @@ This template can be used to start your own Jexxa application
 *   Template for [Unit-](src/test/java/io/jexxa/jexxatemplate/applicationservice/BookStoreServiceTest.java) and [Integration tests](src/test/java/io/jexxa/jexxatemplate/integration/applicationservice/JexxaTemplateIT.java)
 
 *   Predefined architectural tests for: 
-    *   [Pattern Language](src/test/java/io/jexxa/jexxatemplate/architecture/PatternLanguageTest.java) to validate the correct annotation of your application using project [Addend](http://addend.jexxa.io/) 
-    *   [Onion Architecture](src/test/java/io/jexxa/jexxatemplate/architecture/OnionArchitectureTest.java) to validates dependencies between packages of your application
-    *   [Usage of Aggregates](src/test/java/io/jexxa/jexxatemplate/architecture/StatelessApplicationCoreTest.java) to validate that your business logic is not exposed
+    *   [Pattern Language](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validate the correct annotation of your application using project [Addend](http://addend.jexxa.io/) 
+    *   [Ports&Adapters Architecture](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validates dependencies between packages of your application
+    *   [Usage of Aggregates](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validate that your business logic is not exposed
 
 *   Predefined CI/CD scripts for GitHub including automatic dependency updates 
  

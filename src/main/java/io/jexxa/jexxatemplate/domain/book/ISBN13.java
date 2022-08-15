@@ -9,11 +9,13 @@ import java.util.Objects;
  * IMPORTANT NOTE: This is a simplified ISBN13 number which only validates the checksum because this is sufficient for this tutorial
  */
 @ValueObject
-public record ISBN13(String value)
+public record ISBN13(String isbn13)
 {
-    public ISBN13 {
-        Objects.requireNonNull(value);
-        validateChecksum(value);
+    public ISBN13
+    {
+        // The canonical constructor must be called in all cases.
+        // So we put the validation of our attributes here.
+        validateChecksum(isbn13);
     }
 
     @ValueObjectFactory(ISBN13.class)
@@ -24,9 +26,17 @@ public record ISBN13(String value)
 
     private static void validateChecksum(String isbn13)
     {
+        Objects.requireNonNull(isbn13);
+
         var digits = isbn13
                 .replace("-","")
                 .toCharArray();
+
+        if (digits.length != 13)
+        {
+            throw new IllegalArgumentException(
+                    "Invalid ISBN number: Expected number of digits is 13. Given value for ISBN number " + isbn13 + " is " + digits.length);
+        }
 
         var digitSum = 0;
 
