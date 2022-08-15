@@ -41,7 +41,7 @@ services:
   ### Infrastructure ###
 
   ActiveMQ:
-    image: rmohr/activemq
+    image: quay.io/artemiscloud/activemq-artemis-broker:latest
     #restart: always
     secrets:
       - jndiUser
