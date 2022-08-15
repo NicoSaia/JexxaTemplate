@@ -43,9 +43,9 @@ services:
   ActiveMQ:
     image: quay.io/artemiscloud/activemq-artemis-broker:latest
     #restart: always
-    secrets:
-      - jndiUser
-      - jndiPassword
+    environment:
+      AMQ_USER: admin
+      AMQ_PASSWORD: admin
     #ports:
     #  - "62616:61616" # TODO: Adjust Port"<free Port>:61616"
     #  - "8261:8161" # TODO: Adjust Port"<free Port>:8161"
