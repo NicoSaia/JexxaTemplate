@@ -22,7 +22,7 @@ This template can be used to start your own Jexxa application
     *   [Ports&Adapters Architecture](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validates dependencies between packages of your application
     *   [Usage of Aggregates](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validate that your business logic is not exposed
 
-*   Predefined CI/CD scripts for GitHub including automatic dependency updates 
+*   Predefined CI/CD pipeline for GitHub including automatic dependency updates 
  
 ## Create new Project from Template
 
