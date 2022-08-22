@@ -3,7 +3,6 @@ version: "3.7"
 services:
 
   ### Application ###
-
   JexxaTemplate: # TODO: Change <ProjectName> (CamelCase)
     image: ghcr.io/jexxa-projects/jexxatemplate:latest # TODO: change image location ghcr.io/<your profile>/<projectname>:latest
     ports:
@@ -11,11 +10,6 @@ services:
     depends_on:
       - ActiveMQ
       - Postgres
-    secrets:
-      - jndiUser
-      - jndiPassword
-      - jdbcUser
-      - jdbcPassword
 
     healthcheck:
       test: ["CMD-SHELL", "wget -nv -t1 --spider 'http://localhost:7500/BoundedContext/isRunning/'"]
@@ -23,47 +17,38 @@ services:
       timeout: 10s
       retries: 3
 
-    deploy:
+    deploy:   # configure zero downtime deployment
       replicas: 2
       update_config:
-        order: start-first        # Configure rolling updates
+        order: start-first
         failure_action: rollback
 
       rollback_config:
-        parallelism: 1            # Rollback config
+        parallelism: 1
         order: start-first
 
       restart_policy:
         condition: on-failure
 
-
-
   ### Infrastructure ###
 
   ActiveMQ:
     image: quay.io/artemiscloud/activemq-artemis-broker:latest
-    #restart: always
     environment:
       AMQ_USER: admin
       AMQ_PASSWORD: admin
-    #ports:
-    #  - "62616:61616" # TODO: Adjust Port"<free Port>:61616"
-    #  - "8261:8161" # TODO: Adjust Port"<free Port>:8161"
+    ports:
+      - "8261:8161" # TODO: Adjust Port"<free Port>:8161"
 
   Postgres:
     image: postgres:14.0-alpine
-    #restart: always
     user: postgres
-    secrets:
-      - jdbcUser
-      - jdbcPassword
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    #ports:
-    #  - "5433:5432" # TODO: Adjust Port "<free Port>:5432"
+
     environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/jdbcPassword
-      POSTGRES_USER_FILE: /run/secrets/jdbcUser
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin"]
@@ -73,14 +58,3 @@ services:
 
 volumes:
   postgres-data:
-
-secrets:
-  jndiPassword:
-    external: true
-  jndiUser:
-    external: true
-
-  jdbcUser:
-    external: true
-  jdbcPassword:
-    external: true

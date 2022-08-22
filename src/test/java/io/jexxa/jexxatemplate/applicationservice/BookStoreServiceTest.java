@@ -9,12 +9,14 @@ import io.jexxa.jexxatemplate.domain.book.ISBN13;
 import io.jexxa.jexxatemplate.domainservice.DomainEventSender;
 import io.jexxa.jexxatest.JexxaTest;
 import io.jexxa.jexxatest.infrastructure.drivenadapterstrategy.messaging.recording.MessageRecorder;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.jexxa.jexxatemplate.domain.book.BookSoldOut.bookSoldOut;
 import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;
 import static io.jexxa.jexxatest.JexxaTest.getJexxaTest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,7 +27,7 @@ class BookStoreServiceTest
 
     private BookStoreService objectUnderTest;       // Object we want to test
     private MessageRecorder  publishedDomainEvents; // Message recorder to validate published DomainEvents
-    private BookRepository   bookRepository;        // Repository to validate results in the tests
+    private BookRepository bookRepository;          // Repository to validate results in the tests
 
 
     @BeforeEach
@@ -35,9 +37,10 @@ class BookStoreServiceTest
         // mock framework is required. It expects the class name your application!
         JexxaTest jexxaTest = getJexxaTest(JexxaTemplate.class);
 
-        objectUnderTest       = jexxaTest.getInstanceOfPort(BookStoreService.class);
-        publishedDomainEvents = jexxaTest.getMessageRecorder(DomainEventSender.class);
-        bookRepository        = jexxaTest.getRepository(BookRepository.class);
+        // Request the objects needed for our tests
+        objectUnderTest       = jexxaTest.getInstanceOfPort(BookStoreService.class);   // 1. We need the object we want to test
+        publishedDomainEvents = jexxaTest.getMessageRecorder(DomainEventSender.class); // 2. A recorder for DomainEvents published via DomainEventSender
+        bookRepository        = jexxaTest.getRepository(BookRepository.class);         // 3. Repository managing all books
 
         // Invoke all bootstrapping services from main to ensure same starting point
         jexxaTest.getJexxaMain().bootstrapAnnotation(DomainService.class);
@@ -52,10 +55,10 @@ class BookStoreServiceTest
         //Act
         objectUnderTest.addToStock(ANY_BOOK, amount);
 
-        //Assert - Here you can also use all the interfaces for driven adapters defined in your application without running the infrastructure
-        assertEquals( amount, objectUnderTest.amountInStock(ANY_BOOK) );
-        assertEquals( amount, bookRepository.get(ANY_BOOK).amountInStock() );
-        assertTrue( publishedDomainEvents.isEmpty() );
+        //Assert
+        assertEquals( amount, objectUnderTest.amountInStock(ANY_BOOK) );      // Perform assertion against the object we test
+        assertEquals( amount, bookRepository.get(ANY_BOOK).amountInStock() ); // Perform assertion against the repository
+        assertTrue( publishedDomainEvents.isEmpty() );                        // Perform assertion against published DomainEvents
     }
 
 
@@ -69,10 +72,10 @@ class BookStoreServiceTest
         //Act
         objectUnderTest.sell(ANY_BOOK);
 
-        //Assert - Here you can also use all the interfaces for driven adapters defined in your application without running the infrastructure
-        assertEquals( amount - 1, objectUnderTest.amountInStock(ANY_BOOK) );
-        assertEquals( amount - 1, bookRepository.get(ANY_BOOK).amountInStock() );
-        assertTrue( publishedDomainEvents.isEmpty() );
+        //Assert
+        assertEquals( amount - 1, objectUnderTest.amountInStock(ANY_BOOK) );       // Perform assertion against the object we test
+        assertEquals( amount - 1, bookRepository.get(ANY_BOOK).amountInStock() );  // Perform assertion against the repository
+        assertTrue( publishedDomainEvents.isEmpty() );                                     // Perform assertion against published DomainEvents
     }
 
     @Test
@@ -93,10 +96,10 @@ class BookStoreServiceTest
         //Act
         objectUnderTest.sell(ANY_BOOK);
 
-        //Assert - Here you can also use all the interfaces for driven adapters defined in your application without running the infrastructure
-        assertEquals( 0 , objectUnderTest.amountInStock(ANY_BOOK) );
-        assertEquals( 1 , publishedDomainEvents.size() );
-        assertEquals( bookSoldOut(ANY_BOOK), publishedDomainEvents.getMessage(BookSoldOut.class));
+        //Assert
+        assertEquals( 0 , objectUnderTest.amountInStock(ANY_BOOK) );                        // Perform assertion against the object we test
+        assertEquals( 1 , publishedDomainEvents.size() );                                   // Perform assertion against the repository
+        assertEquals( bookSoldOut(ANY_BOOK), publishedDomainEvents.getMessage(BookSoldOut.class));  // Perform assertion against published DomainEvents
     }
 
 }
