@@ -37,11 +37,9 @@ services:
     environment:
       AMQ_USER: admin
       AMQ_PASSWORD: admin
-    ports:
-      - "8261:8161" # TODO: Adjust Port"<free Port>:8161"
 
   Postgres:
-    image: postgres:14.0-alpine
+    image: postgres:latest
     user: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
