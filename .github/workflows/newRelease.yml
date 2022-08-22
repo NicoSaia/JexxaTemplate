@@ -25,7 +25,7 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: admin
-          POSTGRES_USER: admin
+          POSTGRES_USER: postgres
 
     steps:
       # Login into GHCR
