@@ -37,17 +37,6 @@ So, if you want to create and docker image just go to GitHub actions and start a
 *   [docker-compose.yml](deploy/docker-compose.yml)
     *   Stack to run the application as stack in your production environment
 
-### Configure Secrets
-
-In order to use docker-compose.yml you have to configure following secrets.
-Please note that the `echo` command states the content of the secret. Please note, that the
-echo statement shows default passwords that must not be used in production. 
-
-```shell
-echo 'admin' | docker secret create jdbcUser -
-echo 'admin' | docker secret create jdbcPassword -
-echo 'artemis' | docker secret create jndiUser -
-echo 'password' | docker secret create jndiPassword -
 ```
 ### Deploy Stack
 In order to deploy the stack, you can use following command
