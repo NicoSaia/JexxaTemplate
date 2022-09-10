@@ -36,14 +36,14 @@ This template can be used to start your own Jexxa application
 
 *   Checkout the new project in your favorite IDE
 
-*   Without running Developer Stack:
+*   Without running [developer stack](deploy/developerStack.yml):
     ```shell
     mvn clean install -P '!integrationTests'
 
     java -jar "-Dio.jexxa.config.import=src/test/resources/jexxa-local.properties" target/jexxatemplate-jar-with-dependencies.jar
     ```
 
-*   [Optional] **With** running Developer Stack:
+*   [Optional] **With** running [developer stack](deploy/developerStack.yml):
     ```shell
     mvn clean install
     
