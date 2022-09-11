@@ -77,6 +77,11 @@ This template can be used to start your own Jexxa application
     mvn versions:set -DnewVersion='0.1.0-SNAPSHOT'
     ```
 
+*   [Optional] Build a docker image via ['New Release' GitHub-Actions](https://github.com/jexxa-projects/JexxaTemplate/actions/workflows/newRelease.yml) 
+    ```shell
+    mvn versions:set -DnewVersion='0.1.0-SNAPSHOT'
+    ```
+
 ### Set up the CI/CD Pipeline  
 
 To see how to run your application together with a CI/CD pipeline see [here](README-CICD.md).
