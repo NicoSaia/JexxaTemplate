@@ -103,16 +103,14 @@
     <maven.shade.plugin>3.3.0</maven.shade.plugin>
     <maven.exec.plugin>3.1.0</maven.exec.plugin>
 
-    <context.command.start>
-          -javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${maven.jacoco.plugin}/org.jacoco.agent-${maven.jacoco.plugin}-runtime.jar=destfile=jacoco-it-app.exec,port=6300,output=tcpserver
-          -jar -Dio.jexxa.config.import=./src/test/resources/jexxa-test.properties ${project.build.directory}/${project.artifactId}-jar-with-dependencies.jar
-     </context.command.start>
-   <context.command.stop>
-     -version
-   </context.command.stop>
- </properties>
+  <!-- command to start the application for integration tests -->
+  <context.command.start>
+        -javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${maven.jacoco.plugin}/org.jacoco.agent-${maven.jacoco.plugin}-runtime.jar=destfile=jacoco-it-app.exec,port=6300,output=tcpserver
+        -jar -Dio.jexxa.config.import=./src/test/resources/jexxa-test.properties ${project.build.directory}/${project.artifactId}-jar-with-dependencies.jar
+   </context.command.start>
+</properties>
 
-  <!-- ********************************************************* -->
+<!-- ********************************************************* -->
   <!-- TODO (OPTIONAL): Add additional dependencies if required  -->
   <!-- ********************************************************* -->
   <dependencies>
@@ -719,19 +717,6 @@
                   <async>true</async>
                   <commandlineArgs>
                     ${context.command.start}
-                  </commandlineArgs>
-                </configuration>
-              </execution>
-              <execution>
-                <id>post-integration-test</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>${java.home}/bin/java</executable>
-                  <commandlineArgs>
-                    ${context.command.stop}
                   </commandlineArgs>
                 </configuration>
               </execution>
