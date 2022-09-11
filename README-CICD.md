@@ -37,7 +37,6 @@ So, if you want to create and docker image just go to GitHub actions and start a
 *   [docker-compose.yml](deploy/docker-compose.yml)
     *   Stack to run the application as stack in your production environment
 
-```
 ### Deploy Stack
 In order to deploy the stack, you can use following command
 ```shell
