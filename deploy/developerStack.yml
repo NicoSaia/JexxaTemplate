@@ -3,13 +3,13 @@ version: "3.7"
 services:
   ActiveMQ:
     image: quay.io/artemiscloud/activemq-artemis-broker:latest
-    restart: always
     ports:
       - "61616:61616"
       - "8161:8161"
     environment:
       AMQ_USER: admin
       AMQ_PASSWORD: admin
+      AMQ_EXTRA_ARGS: --relax-jolokia
 
   Postgres:
     image: postgres:latest
@@ -30,4 +30,3 @@ services:
 
 volumes:
   postgres-data:
-
