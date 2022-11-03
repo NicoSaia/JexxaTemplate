@@ -10,6 +10,7 @@ import io.jexxa.jexxatemplate.domain.book.BookSoldOut;
 public class DomainEventService
 {
     private final DomainEventSender domainEventSender;
+    @SuppressWarnings("unused")
     public DomainEventService(DomainEventSender domainEventSender)
     {
         this.domainEventSender = domainEventSender;

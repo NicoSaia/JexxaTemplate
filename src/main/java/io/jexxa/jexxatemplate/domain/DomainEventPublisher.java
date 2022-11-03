@@ -36,6 +36,7 @@ public final class DomainEventPublisher {
         instance().subscribers.get(domainEvent).add(subscriber);
     }
 
+    @SuppressWarnings("unused")
     public static synchronized void subscribe(Consumer<Object> subscriber)
     {
         subscribe(Object.class, subscriber);

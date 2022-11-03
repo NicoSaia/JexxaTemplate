@@ -15,6 +15,7 @@ public class ReferenceLibrary
 {
     private final BookRepository bookRepository;
 
+    @SuppressWarnings("unused")
     public ReferenceLibrary(BookRepository bookRepository)
     {
         this.bookRepository = Objects.requireNonNull(bookRepository);
