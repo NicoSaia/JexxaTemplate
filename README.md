@@ -50,37 +50,24 @@ This template can be used to start your own Jexxa application
     java -jar "-Dio.jexxa.config.import=src/test/resources/jexxa-test.properties" target/jexxatemplate-jar-with-dependencies.jar
     ```
 
-*   See [here](https://github.com/jexxa-projects/JexxaTutorials/blob/main/BookStore/README.md#run-the-application) how to use the application from command line with `curl` (section `Execute some commands using curl`).
-
+*   Now you can use `curl` to access your application:
+    ```Console
+    curl -X GET  http://localhost:7503/BookStoreService/getBooks
+    ```
+    Response should look as follows 
+    ```Console
+    [
+      {"isbn13":"978-1-60309-322-4"},{"isbn13":"978-1-891830-85-3"},
+      {"isbn13":"978-1-60309-047-6"},{"isbn13":"978-1-60309-025-4"},
+      {"isbn13":"978-1-60309-016-2"},{"isbn13":"978-1-60309-265-4"}
+    ]
+    ```
 *   [Optional] See [here](https://github.com/jexxa-projects/JexxaTutorials/blob/main/BookStore/README-OPENAPI.md#explore-openapi) how to use the application with Swagger-UI
 
 ## Start Developing your Project
 
-### Adjust Project 
-*   Refactor/Rename file `JexxaTemplate.java` into `<ProjektName>.java` within your IDE
-
-*   Refactor/Rename the GroupId (directory) `io.jexxa.jexxatemplate` into `com.github.<your-github-account>` for example within your IDE
-
-*   Adjust all sections marked with TODO (and remove TODO statement) in : 
-    *    [pom.xml](pom.xml) 
-    *    [jexxa-application.properties](src/main/resources/jexxa-application.properties) 
-    *    [jexxa-test.properties](src/test/resources/jexxa-test.properties)
-    *    [docker-compose.yml](deploy/docker-compose.yml)
-
-*   In README.md:
-    *   Search/replace (case-sensitive) `JexxaTemplate` by `<ProjectName>`
-    *   Search/replace (case-sensitive) `jexxatemplate` by `<projectname>`
-    *   Adjust the badges (first two lines)
-
-*   Adjust release version
-    ```shell
-    mvn versions:set -DnewVersion='0.1.0-SNAPSHOT'
-    ```
-
-*   [Optional] Build a docker image via ['New Release' GitHub-Actions](https://github.com/jexxa-projects/JexxaTemplate/actions/workflows/newRelease.yml) 
-    ```shell
-    mvn versions:set -DnewVersion='0.1.0-SNAPSHOT'
-    ```
+### Adjust Project Name
+Now, you should rename `JexxaTemplate` to your own applications name, that is described [here](README-ProjectName.md). 
 
 ### Set up the CI/CD Pipeline  
 
