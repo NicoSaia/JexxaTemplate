@@ -15,7 +15,7 @@ This template can be used to start your own Jexxa application
 
 *   Build your first Jexxa-project as self-contained jar and/or docker image
     
-*   Template for [Unit-](src/test/java/io/jexxa/jexxatemplate/applicationservice/BookStoreServiceTest.java) and [Integration tests](src/test/java/io/jexxa/jexxatemplate/integration/applicationservice/JexxaTemplateIT.java)
+*   Template for [Unit-](src/test/java/io/jexxa/jexxatemplate/applicationservice/BookStoreServiceTest.java) and [Integration tests](src/test/java/io/jexxa/jexxatemplate/integration/JexxaTemplateIT.java)
 
 *   Predefined architectural tests for: 
     *   [Pattern Language](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validate the correct annotation of your application using project [Addend](http://addend.jexxa.io/) 
