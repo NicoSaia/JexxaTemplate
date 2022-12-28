@@ -15,7 +15,7 @@ This template can be used to start your own Jexxa application
 
 *   Build your first Jexxa-project as self-contained jar and/or docker image
     
-*   Template for [Unit-](src/test/java/io/jexxa/jexxatemplate/applicationservice/BookStoreServiceTest.java) and [Integration tests](src/test/java/io/jexxa/jexxatemplate/integration/JexxaTemplateIT.java)
+*   Template for [Unit-](src/test/java/io/jexxa/jexxatemplate/domain/book/BookTest.java), [Stub-](src/test/java/io/jexxa/jexxatemplate/applicationservice/BookStoreServiceTest.java) and [Integration tests](src/test/java/io/jexxa/jexxatemplate/integration/JexxaTemplateIT.java)
 
 *   Predefined architectural tests for: 
     *   [Pattern Language](src/test/java/io/jexxa/jexxatemplate/architecture/ArchitectureTest.java) to validate the correct annotation of your application using project [Addend](http://addend.jexxa.io/) 
@@ -26,7 +26,7 @@ This template can be used to start your own Jexxa application
  
 ## Create new Project from Template
 
-*   In GitHub press `Use this template` (requires GitHub account) or fork the project  
+*   In GitHub press `Use this template` (requires GitHub account) or fork the project. If you do not have a GitHub account you can just clone the repository. 
 
 *   Enter a `project name` for the repository. This template uses following convention:
     *   Project name should be written in camel case notation, such as `JexxaTemplate`
