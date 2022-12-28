@@ -1,4 +1,4 @@
-package io.jexxa.jexxatemplate.integration.applicationservice;
+package io.jexxa.jexxatemplate.integration;
 
 import io.jexxa.jexxatemplate.JexxaTemplate;
 import kong.unirest.Unirest;
