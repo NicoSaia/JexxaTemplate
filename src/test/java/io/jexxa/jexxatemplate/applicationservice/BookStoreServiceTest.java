@@ -21,6 +21,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ *  This test validates the BookStoreService.
+ *  <br>
+ *  The main purpose of this test is to show the usage of JexxaTest. JexxaTest replaces all infrastructure
+ *  components such as a database or message bus by stubs. There is no need to use any mocks!
+ *  <br>
+ *  Within DDD you should focus on testing aggregates. So this test is mainly for demonstrating purpose that
+ *  may be helpful to demonstrate the potential of an onion architecture and to support the transition to pure
+ *  unit tests.
+ */
 class BookStoreServiceTest
 {
     private static final ISBN13 ANY_BOOK = createISBN("978-3-86490-387-8" );
