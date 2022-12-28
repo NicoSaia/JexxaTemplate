@@ -8,7 +8,7 @@ import static io.jexxa.jexxatest.architecture.ArchitectureRules.patternLanguage;
 import static io.jexxa.jexxatest.architecture.ArchitectureRules.portsAndAdapters;
 
 /**
- * This test can be used in all your applications.
+ * This test can be used to validate the architecture of your application
  * <p>
  * You have only to adjust test validatePortsAndAdapters. Here you have to add all your
  * packages containing the driven and driving adapters. This information is required to ensure
