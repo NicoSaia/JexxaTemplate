@@ -27,9 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *  The main purpose of this test is to show the usage of JexxaTest. JexxaTest replaces all infrastructure
  *  components such as a database or message bus by stubs. There is no need to use any mocks!
  *  <br>
- *  Within DDD you should focus on testing aggregates. So this test is mainly for demonstrating purpose that
- *  may be helpful to demonstrate the potential of an onion architecture and to support the transition to pure
- *  unit tests.
+ *  General note: Within DDD you should focus on testing aggregates since they contain your business logic. So this test
+ *  is mainly for demonstrating purpose that may be helpful to show the potential of an onion architecture and to
+ *  support the transition from mock tests to pure unit tests.
  */
 class BookStoreServiceTest
 {

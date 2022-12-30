@@ -50,7 +50,7 @@ This template can be used to start your own Jexxa application
     java -jar "-Dio.jexxa.config.import=src/test/resources/jexxa-test.properties" target/jexxatemplate-jar-with-dependencies.jar
     ```
 
-*   Now you can use `curl` to access your application:
+*   Now you can use `curl` to access your application, or open this [http://localhost:7503/BookStoreService/getBooks](http://localhost:7503/BookStoreService/getBooks) in your browser:
     ```Console
     curl -X GET  http://localhost:7503/BookStoreService/getBooks
     ```
