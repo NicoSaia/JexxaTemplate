@@ -8,9 +8,11 @@ In the following we assume a docker-swarm setup which is a typical starting poin
 ## Create new release and docker image
 
 Within this template we use the maven-jib plugin to create and upload a new image. To simplify this process 
-and to combine it with some other great features of GitHubs CI/CD possibilities the image should be build on GitHub. 
+and to combine it with some other great features of GitHubs CI/CD possibilities the image should be build on GitHub and uploaded to GitHub Container Registry (ghcr).
 
 So, if you want to create and docker image just go to GitHub actions and start action `New Release`
+
+__Important note:__ Up to now, the GitHub Container Registry is free of charge only for public repositories. So please ensure that your project is public, or you have billing plan including the ghcr.   
 
 ### GitHub Actions
 
