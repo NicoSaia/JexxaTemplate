@@ -10,7 +10,7 @@
     *    [jexxa-test.properties](src/test/resources/jexxa-test.properties)
     *    [docker-compose.yml](deploy/docker-compose.yml)
 
-*   In README.md:
+*   In README.md and README-ProjectName.md:
     *   Search/replace (case-sensitive) `JexxaTemplate` by `<ProjectName>`
     *   Search/replace (case-sensitive) `jexxatemplate` by `<projectname>`
     *   Adjust the badges (first two lines)
