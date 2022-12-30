@@ -21,7 +21,4 @@
     ```
 
 *   [Optional] Build a docker image via ['New Release' GitHub-Actions](https://github.com/jexxa-projects/JexxaTemplate/actions/workflows/newRelease.yml) 
-    ```shell
-    mvn versions:set -DnewVersion='0.1.0-SNAPSHOT'
-    ```
 
