@@ -68,8 +68,8 @@ This template can be used to start your own Jexxa application
 
 ### Adjust Project Name
 
-Now, you should rename `JexxaTemplate` to your own applications name, that is described [here](README-ProjectName.md). 
+Rename `JexxaTemplate` to your own applications name, as described [here](README-ProjectName.md). 
 
 ### Set up the CI/CD Pipeline  
 
-To see how to run your application together with a CI/CD pipeline see [here](README-CICD.md).
+In order to continuously build and deply your application, configure your CI/CD pipeline as described [here](README-CICD.md).
