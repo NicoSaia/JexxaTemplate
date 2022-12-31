@@ -72,7 +72,7 @@ Rename `JexxaTemplate` to your own applications name, as described [here](README
 
 ### Set up the CI/CD Pipeline  
 
-In order to continuously build and depoly your application, configure your CI/CD pipeline as described [here](README-CICD.md).
+In order to continuously build and deploy your application, configure your CI/CD pipeline as described [here](README-CICD.md).
 
 ### Cleanup Readme
 
