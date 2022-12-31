@@ -6,6 +6,7 @@ import io.jexxa.addend.applicationcore.DomainService;
 import io.jexxa.jexxatemplate.domain.DomainEventPublisher;
 import io.jexxa.jexxatemplate.domain.book.BookSoldOut;
 
+@SuppressWarnings("unused")
 @DomainService
 public class DomainEventService
 {

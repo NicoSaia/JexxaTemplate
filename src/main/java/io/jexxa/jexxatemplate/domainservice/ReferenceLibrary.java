@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;
 
+@SuppressWarnings("unused")
 @DomainService
 public class ReferenceLibrary
 {
