@@ -73,3 +73,7 @@ Rename `JexxaTemplate` to your own applications name, as described [here](README
 ### Set up the CI/CD Pipeline  
 
 In order to continuously build and depoly your application, configure your CI/CD pipeline as described [here](README-CICD.md).
+
+### Cleanup Readme
+
+After successfully set up your new project, you should clean up the text of README as described [here](https://www.makeareadme.com)    
