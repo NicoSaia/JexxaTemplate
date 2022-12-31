@@ -1,36 +1,46 @@
 # CI/CD process 
 
-This README provides a guideline how to build a CI/CD pipeline using GitHub actions. 
-As a result a new docker image is created that can be used with kubernetes or docker. 
+This README provides a guideline how to set up and use a CI/CD pipeline based on GitHub actions.
 
-In the following we assume a docker-swarm setup which is a typical starting point for clustering your container. 
+Within the context of this template, CI/CD means: 
+*   __Continuous Integration:__ Refers to automatic build, test and merge process. The merge process is only automated for dependency updates of patch and minor versions. 
+*   __Continuous Delivery:__ Refers to automatically tag and release a version to a repository. This means building a new docker image and uploaded it to [GitHub Container Registry](https://ghcr.io).
 
-## Create new release and docker image
+## Set up your CI/CD Process
 
-Within this template we use the maven-jib plugin to create and upload a new image. To simplify this process 
-and to combine it with some other great features of GitHubs CI/CD possibilities the image should be build on GitHub and uploaded to GitHub Container Registry (ghcr).
+*   Make your repository public to use ghcr or ensure that you have billing plan including access to ghcr.
+  
+*   Setup action secret for auto merge version updates from dependabot:
 
-So, if you want to create and docker image just go to GitHub actions and start action `New Release`
+    *   Create a personal access token (PAT), as described [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) with `public_repo` access enabled.
 
-__Important note:__ Up to now, the GitHub Container Registry is free of charge only for public repositories. So please ensure that your project is public, or you have billing plan including the ghcr.   
+    *   Set up a secret for GitHub actions called `MERGE_ME_SECRET` as described [here](https://docs.github.com/en/actions/security-guides/encrypted-secrets?tool=webui#creating-encrypted-secrets-for-a-repository) that includes the generated PAT
 
-### GitHub Actions
+## Using CI/CD process
+
+The CI/CD process is based on following GitHub actions that are either started manually or automatically:  
 
 *   [mavenBuild.yml](.github/workflows/mavenBuild.yml):
-    *   Builds the project after each push
-    *   Can be started manually from GitHub web page if required
+    *   __Description:__ Builds the project after each push
+    *   __Started:__ Automatically and manually   
 
 *   [newRelease.yml](.github/workflows/newRelease.yml):
-    *   Manually create a new release using maven via GitHub web page
-    *   Can only be run via GitHub web page
+    *   __Description:__ Create a new release using maven via GitHub web page
+    *   __Started:__ Manually only 
 
 *   [autoMerge.yml](.github/workflows/autoMerge.yml):
-    *   Automatic merge of dependency updates with new patch or minor versions of dependencies. 
-    *   See https://github.com/ridedott/merge-me-action
+    *   __Description:__ Automatic merge of dependency updates with new patch or minor versions of dependencies from Dependabot. See https://github.com/ridedott/merge-me-action for more information.
+    *   __Started:__ Automatically only
 
 *   [dependabot.yml](.github/dependabot.yml):
-    *   Check of new dependencies
+    *   __Description:__ Check for new dependencies and create a pull request
+    *   __Started:__ Automatically only (each day)
   
+## Deployment
+
+In the following we assume a docker-swarm setup which is a typical starting point for clustering your container.
+In addition, it can be easily run and maintained on your developing machine. 
+
 ### Docker-Stacks
 
 *   [developerStack.yml](deploy/developerStack.yml)
@@ -39,8 +49,16 @@ __Important note:__ Up to now, the GitHub Container Registry is free of charge o
 *   [docker-compose.yml](deploy/docker-compose.yml)
     *   Stack to run the application as stack in your production environment
 
-### Deploy Stack
-In order to deploy the stack, you can use following command
+### Deploy Stack 
+
+In order to deploy the stack, you can use following command from your checkout directory. 
 ```shell
 docker stack deploy --compose-file ./deploy/docker-compose.yml jexxatemplate
 ```
+
+### Continuous Deployment 
+
+If you want start using continuous deployment mechanism which automatically deploys new versions into
+production, we recommend to start using some tools such as [Portainer](https://www.portainer.io). This 
+container management platform provides unified frontend to docker, docker-swarm and kubernetes. Therefore, 
+it is a good starting point. 
