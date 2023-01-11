@@ -1,48 +1,40 @@
 package io.jexxa.jexxatemplate.integration;
 
+import io.jexxa.infrastructure.drivingadapter.messaging.JMSConfiguration;
 import io.jexxa.jexxatemplate.JexxaTemplate;
+import io.jexxa.jexxatemplate.applicationservice.BookStoreService;
+import io.jexxa.jexxatemplate.domain.book.BookSoldOut;
 import io.jexxa.jexxatemplate.domain.book.ISBN13;
-import kong.unirest.Unirest;
-import kong.unirest.UnirestException;
+import io.jexxa.jexxatest.JexxaIntegrationTest;
+import io.jexxa.jexxatest.integrationtest.messaging.MessageBinding;
+import io.jexxa.jexxatest.integrationtest.rest.RESTBinding;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static io.jexxa.infrastructure.drivingadapter.rest.JexxaWebProperties.JEXXA_REST_PORT;
 import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;
-import static io.jexxa.jexxatest.JexxaTest.getJexxaTest;
-import static kong.unirest.ContentType.APPLICATION_JSON;
-import static kong.unirest.HeaderNames.CONTENT_TYPE;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JexxaTemplateIT
 {
-    static private final String CONTEXT_NAME = "/BoundedContext/contextName";
-    static private final String IS_RUNNING = "/BoundedContext/isRunning";
-
-    static private final String ADD_TO_STOCK = "/BookStoreService/addToStock";
-    static private final String AMOUNT_IN_STOCK = "/BookStoreService/amountInStock";
-
-
-    static private String restPath;
+    static private final String addToStock = "addToStock";
+    static private final String amountInStock = "amountInStock";
+    static private final String sell = "sell";
     private static final ISBN13 ANY_BOOK = createISBN("978-3-86490-387-8" );
 
-    @BeforeEach
-    void initBeforeEach()
+
+    private static JexxaIntegrationTest jexxaIntegrationTest;  // Simplified IT testing with jexxa-test
+    private static RESTBinding restBinding;                    // Binding to access application under test via REST
+    private static MessageBinding messageBinding;              // Binding to access application under test via JMS
+
+    @BeforeAll
+    static void initBeforeAll()
     {
-        var jexxaTest = getJexxaTest(JexxaTemplate.class);
-
-        restPath = "http://localhost:" + jexxaTest.getProperties().getProperty(JEXXA_REST_PORT);
-
-        //Wait until application was started (using 10 seconds should be sufficient to start large applications)
-        await().atMost(10, TimeUnit.SECONDS)
-                .pollDelay(100, TimeUnit.MILLISECONDS)
-                .ignoreException(UnirestException.class)
-                .until(() -> getRequest(restPath + IS_RUNNING, Boolean.class));
-
+        jexxaIntegrationTest = new JexxaIntegrationTest(JexxaTemplate.class);
+        messageBinding = jexxaIntegrationTest.getMessageBinding();
+        restBinding = jexxaIntegrationTest.getRESTBinding();
     }
 
 
@@ -50,9 +42,10 @@ class JexxaTemplateIT
     void testStartupApplication()
     {
         //Arrange -
+        var boundedContext = restBinding.getBoundedContext();
 
-        //Act
-        var result = getRequest(restPath + CONTEXT_NAME, String.class);
+        //Act / Assert
+        var result = boundedContext.contextName();
 
         //Assert
         assertEquals(JexxaTemplate.class.getSimpleName(), result);
@@ -62,47 +55,47 @@ class JexxaTemplateIT
     void testAddBook()
     {
         //Arrange
-        var amount = 5;
-        var inStock = postRequest(restPath + AMOUNT_IN_STOCK, Integer.class, ANY_BOOK );
-        var expectedResult = amount + inStock;
+        var bookStoreService = restBinding.getRESTHandler(BookStoreService.class);
+
+        var addedBooks = 5;
+        var inStock = bookStoreService.postRequest(Integer.class, amountInStock, ANY_BOOK );
 
         //Act
-        postRequest(restPath + ADD_TO_STOCK, Void.class, new Object[]{ANY_BOOK, amount});
-        var result = postRequest(restPath + AMOUNT_IN_STOCK, Integer.class, ANY_BOOK );
+        bookStoreService.postRequest(Void.class, addToStock, ANY_BOOK, addedBooks);
+        var result = bookStoreService.postRequest(Integer.class, amountInStock, ANY_BOOK );
 
         //Assert
-        assertEquals(expectedResult, result);
+        assertEquals(inStock + addedBooks, result);
     }
 
-
-    static public <T> T getRequest(String uri, Class<T> returnType)
+    @Test
+    void testSellLastBook()
     {
-        return Unirest.get(uri)
-                .header(CONTENT_TYPE, APPLICATION_JSON.getMimeType())
-                .asObject(returnType)
-                .getBody();
-    }
+        //Arrange
+        var bookStoreService = restBinding.getRESTHandler(BookStoreService.class);
+        var messageListener = messageBinding.getMessageListener("BookStoreTopic", JMSConfiguration.MessagingType.TOPIC);
 
-    @SuppressWarnings("UnusedReturnValue")
-    static public <T> T postRequest(String uri, Class<T> returnType, Object[] parameters)
-    {
-        return Unirest.post(uri)
-                .header(CONTENT_TYPE, APPLICATION_JSON.getMimeType())
-                .body(parameters)
-                .asObject(returnType).getBody();
-    }
+        bookStoreService.postRequest(Void.class, addToStock, ANY_BOOK, 5);
+        var inStock = bookStoreService.postRequest(Integer.class, amountInStock, ANY_BOOK );
 
-    static public <T> T postRequest(String uri, Class<T> returnType, Object parameter)
-    {
-        return Unirest.post(uri)
-                .header(CONTENT_TYPE, APPLICATION_JSON.getMimeType())
-                .body(parameter)
-                .asObject(returnType).getBody();
+        //Act
+        for (int i = 0; i < inStock; ++i)
+        {
+            bookStoreService.postRequest(Void.class, sell, ANY_BOOK); // Sell all books in stock
+        }
+
+        // Receive the jms message
+        var result = messageListener
+                .awaitMessage(5, TimeUnit.SECONDS)
+                .pop(BookSoldOut.class);
+
+        //Assert
+        assertEquals(BookSoldOut.bookSoldOut(ANY_BOOK), result);
     }
 
     @AfterAll
-    static void tearDown()
+    static void shutDown()
     {
-        Unirest.shutDown();
+        jexxaIntegrationTest.shutDown();
     }
 }
