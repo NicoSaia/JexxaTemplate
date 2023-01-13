@@ -6,6 +6,8 @@ Within the context of this template, CI/CD means:
 *   __Continuous Integration:__ Refers to automatic build, test and merge process. The merge process is only automated for dependency updates of patch and minor versions. 
 *   __Continuous Delivery:__ Refers to automatically tag and release a version to a repository. This means building a new docker image and uploaded it to [GitHub Container Registry](https://ghcr.io).
 
+To avoid misunderstandings we do not abbreviate the term __continuous deployment__ which in this context describes the automatic deployment into production.  
+
 ## Set up your CI/CD Process
 
 *   Make your repository public to use ghcr or ensure that you have billing plan including access to ghcr.
@@ -36,7 +38,7 @@ The CI/CD process is based on following GitHub actions that are either started m
     *   __Description:__ Check for new dependencies and create a pull request
     *   __Started:__ Automatically only (each day)
   
-## Deployment
+## Deployment 
 
 In the following we assume a docker-swarm setup which is a typical starting point for clustering your container.
 In addition, it can be easily run and maintained on your developing machine. 
@@ -61,4 +63,20 @@ docker stack deploy --compose-file ./deploy/docker-compose.yml jexxatemplate
 If you want start using continuous deployment mechanism which automatically deploys new versions into
 production, we recommend to start using some tools such as [Portainer](https://www.portainer.io). This 
 container management platform provides unified frontend to docker, docker-swarm and kubernetes. Therefore, 
-it is a good starting point. 
+it is a good starting point.
+
+In this file, we highlight only the following two aspects:
+
+* **Zero downtime deployment:** For zero downtime deployment we configure rolling updates for the application as you can see
+  in the [docker-compose.yml](deploy/docker-compose.yml). The most interesting part here are the following lines:
+  ```yml  
+  healthcheck:
+     test: ["CMD-SHELL", "wget -nv -t1 --spider 'http://localhost:7500/BoundedContext/isRunning/'"]`
+  ```
+  The return value of this call is only true, if the application could be successfully started. This also includes all
+  connections to infrastructure components, such as requesting a REST port, or setting-up a connection to a database. In  
+  case of a rolling update, a new release is only deployed, if this method returns true within the defined period of time.
+  If this call fails, the old version remains active.
+
+* **Handling of secrets:** In general, Jexxa provides dedicated properties to read credentials from a file as described
+  [here](https://jexxa-projects.github.io/Jexxa/jexxa_reference.html#_secrets). This allows you to dynamically hand in credentials such as a keystore, or a password into a container as files. For local development, you can define some dummy secrets in [jexxa-test.properties](src/test) such as a self-signed certificate. For simplicity reason we define the remaining secrets directly in jexxa-application.properties which is not recommended for production use.
