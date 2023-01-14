@@ -9,14 +9,11 @@ import io.jexxa.jexxatemplate.domain.book.ISBN13;
 import io.jexxa.jexxatemplate.domainservice.DomainEventSender;
 import io.jexxa.jexxatest.JexxaTest;
 import io.jexxa.jexxatest.infrastructure.drivenadapterstrategy.messaging.recording.MessageRecorder;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.jexxa.jexxatemplate.domain.book.BookSoldOut.bookSoldOut;
 import static io.jexxa.jexxatemplate.domain.book.ISBN13.createISBN;
 import static io.jexxa.jexxatest.JexxaTest.getJexxaTest;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -107,9 +104,9 @@ class BookStoreServiceTest
         objectUnderTest.sell(ANY_BOOK);
 
         //Assert
-        assertEquals( 0 , objectUnderTest.amountInStock(ANY_BOOK) );                        // Perform assertion against the object we test
-        assertEquals( 1 , publishedDomainEvents.size() );                                   // Perform assertion against the repository
-        assertEquals( bookSoldOut(ANY_BOOK), publishedDomainEvents.getMessage(BookSoldOut.class));  // Perform assertion against published DomainEvents
+        assertEquals( 0 , objectUnderTest.amountInStock(ANY_BOOK) );                    // Perform assertion against the object we test
+        assertEquals( 1 , publishedDomainEvents.size() );                               // Perform assertion against the repository
+        assertEquals( ANY_BOOK, publishedDomainEvents.getMessage(BookSoldOut.class).isbn13());  // Perform assertion against published DomainEvents
     }
 
 }
